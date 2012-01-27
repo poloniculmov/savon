@@ -133,6 +133,9 @@ module Savon
       # Sets the SOAP request encoding.
       attr_writer :encoding
 
+      # Accessor for the <tt>Savon::WSA</tt> object.
+      attr_accessor :wsa
+
       # Accepts a +block+ and yields a <tt>Builder::XmlMarkup</tt> object to let you create
       # custom body XML.
       def body
@@ -191,12 +194,17 @@ module Savon
 
       # Returns the SOAP header as an XML String.
       def header_for_xml
-        @header_for_xml ||= Gyoku.xml(header) + wsse_header
+        @header_for_xml ||= Gyoku.xml(header) + wsse_header + wsa_header
       end
 
       # Returns the WSSE header or an empty String in case WSSE was not set.
       def wsse_header
         wsse.respond_to?(:to_xml) ? wsse.to_xml : ""
+      end
+
+      # Returns the WSA header or an empty String in case WSA was not set.
+      def wsa_header
+        wsa.respond_to?(:to_xml) ? wsa.to_xml : ""
       end
 
       # Returns the SOAP body as an XML String.

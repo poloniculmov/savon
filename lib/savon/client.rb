@@ -5,6 +5,7 @@ require "savon/wasabi/document"
 require "savon/soap/xml"
 require "savon/soap/request"
 require "savon/soap/response"
+require "savon/wsa"
 
 module Savon
 
@@ -55,6 +56,11 @@ module Savon
     # per SOAP request.
     attr_reader :soap
 
+    # Returns the <tt>Savon::WSA</tt> object.
+    def wsa
+      @wsa ||= WSA.new
+    end
+
     # Executes a SOAP request for a given SOAP action. Accepts a +block+ which is evaluated in the
     # context of this object to let you access the +soap+, +wsdl+, +http+ and +wsse+ methods.
     #
@@ -75,6 +81,7 @@ module Savon
       preconfigure extract_options(args)
       process &block if block
       soap.wsse = wsse
+      soap.wsa = wsa
 
       response = SOAP::Request.new(http, soap).response
       set_cookie response.http.headers
