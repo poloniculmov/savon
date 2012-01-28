@@ -11,7 +11,7 @@ module Savon
   class WSA
 
     # Namespace for WS Addressing.
-    WSANamespace = "http://www.w3.org/2005/08/addressing/"
+    WSANamespace = "http://www.w3.org/2005/08/addressing"
 
     # Namespace for WS Security Utility.// dupe from WSSE...
     WSUNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"

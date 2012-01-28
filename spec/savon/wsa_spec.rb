@@ -5,7 +5,7 @@ describe Savon::WSA do
 
   it "should contain the namespace for WS Addressing" do
     Savon::WSA::WSANamespace.should ==
-      "http://www.w3.org/2005/08/addressing/"
+      "http://www.w3.org/2005/08/addressing"
   end
 
   describe "#action" do
