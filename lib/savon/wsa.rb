@@ -29,7 +29,14 @@ module Savon
     attr_accessor :action, :message_id, :reply_to, :to
 
     def ws_addressing?
-      action && message_id && reply_to && to
+      ret_val = false
+      if (action && to)
+        ret_val = true
+        if reply_to && !message_id
+          ret_val = false
+        end
+      end
+      ret_val
     end
 
     # Returns the XML for a WSA header.
