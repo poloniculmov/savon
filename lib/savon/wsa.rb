@@ -28,11 +28,12 @@ module Savon
 
     attr_accessor :action, :message_id, :reply_to, :to
 
+    ## The WSA specification dictates these rules, see §3.1 at http://www.w3.org/Submission/ws-addressing/
     def ws_addressing?
       ret_val = false
       if (action && to)
         ret_val = true
-        if reply_to && !message_id
+        if (reply_to && !message_id)
           ret_val = false
         end
       end
@@ -47,9 +48,13 @@ module Savon
 
       if ws_addressing?
         xml += Gyoku.xml wsa_element("Action", action).merge!(hash)
-        xml += Gyoku.xml wsa_element("MessageID", message_id).merge!(hash)
-        xml += Gyoku.xml wsa_element("ReplyTo", reply_to, "Address").merge!(hash)
         xml += Gyoku.xml wsa_element("To", to).merge!(hash)
+        if reply_to
+          xml += Gyoku.xml wsa_element("ReplyTo", reply_to, "Address").merge!(hash)
+          xml += Gyoku.xml wsa_element("MessageID", message_id).merge!(hash) # must be present when reply_to is present, see the WSA spec
+        elsif message_id
+          xml += Gyoku.xml wsa_element("MessageID", message_id).merge!(hash)
+        end
       end
 
       xml + @other_xml
